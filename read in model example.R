@@ -60,6 +60,7 @@ map("state", add=T)
 #North Carolina
 plot(expand.grid(lon,lat), xlim=c(-85,-75),ylim=c(32,38),xlab="lon", ylab="lat")
 map("state",regions = "North Carolina", add=T)
+
 points(x=-80.2442, y=36.2442, col="red",pch=16)#Winston Salem
 
 #time series
@@ -188,7 +189,7 @@ head(usa)
 length(usa$long)
 summary(usa)
 
-##----------------------------------------------------------------
+##---------------------------------------------------------------------------
 #find average temperature time series of the US 
 dim(celsius)
 oneM[2,1]
@@ -234,13 +235,47 @@ avgtemp
 #time series for average temperature
 plot(avgtemp, type="l")
 
+##-----------------------------------------------------------------
+#add alaska to US and then find the average
+plot(expand.grid(lon,lat),xlim=c(-170,-66),ylim=c(25,70),xlab="lon", ylab="lat")
+map("world",regions=".*usa",add = T)
 
+#just show alaska
+plot(expand.grid(lon,lat),xlim=c(-180,-129),ylim=c(50,72),xlab="lon", ylab="lat")
+map("world",regions=".*usa",add = T)
 
+#find the points included in Alaska
+which(lon>=-180 & lon<=-130)
+which(lat>=51.33 & lat<=71.83)
 
-#sum=0
-#for (i in 1:190){
-  #sum=sum+month1[i]0
-#}
-dim(oneM)
-length(oneM[,1])
-oneM
+#color the bundary of Alaska
+for (i in 73:92){
+  for (j in 72:81){
+    points(x=lon[i],y=lat[j],col="red",pch=16)
+  }
+}
+
+#mark the one in Alaska as 1 in the matrix
+M[81,c(80:85)] = 1
+M[80,c(78:88)] = 1
+M[79,c(78:88)] = 1
+M[78,c(78:88)] = 1
+M[77,c(76,77,79:88)] = 1
+M[76,c(78:88)] = 1
+M[75,c(80:85,89:91)] = 1
+M[74,c(81:83,90:92)] = 1
+M[73,c(79:81,91,92)] = 1
+M[72,c(74:78)] = 1
+
+#print out new matrix 
+M[c(72:81),c(73:92)]
+
+oneM<-which(M==1, arr.ind = T)
+#plot the us region "green" using matrix oneM
+points(x=lon[oneM[,2]],y=lat[oneM[,1]],col="green",pch=16)
+
+#show US in the grid as green region (include Alaska)
+plot(expand.grid(lon,lat),xlim=c(-170,-66),ylim=c(25,70),xlab="lon", ylab="lat")
+map("world",regions=".*usa",add = T)
+points(x=lon[oneM[,2]],y=lat[oneM[,1]],col="green",pch=16)
+

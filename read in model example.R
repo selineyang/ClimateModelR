@@ -235,6 +235,7 @@ avgtemp
 #time series for average temperature
 plot(avgtemp, type="l")
 
+
 ##-----------------------------------------------------------------
 #add alaska to US and then find the average
 plot(expand.grid(lon,lat),xlim=c(-170,-66),ylim=c(25,70),xlab="lon", ylab="lat")
@@ -262,7 +263,7 @@ M[79,c(78:88)] = 1
 M[78,c(78:88)] = 1
 M[77,c(76,77,79:88)] = 1
 M[76,c(78:88)] = 1
-M[75,c(80:85,89:91)] = 1
+M[75,c(80:84,89:91)] = 1
 M[74,c(81:83,90:92)] = 1
 M[73,c(79:81,91,92)] = 1
 M[72,c(74:78)] = 1
@@ -278,4 +279,25 @@ points(x=lon[oneM[,2]],y=lat[oneM[,1]],col="green",pch=16)
 plot(expand.grid(lon,lat),xlim=c(-170,-66),ylim=c(25,70),xlab="lon", ylab="lat")
 map("world",regions=".*usa",add = T)
 points(x=lon[oneM[,2]],y=lat[oneM[,1]],col="green",pch=16)
+
+store2<-array(0,c(1140,276))
+
+#store all the temperature into matrix 'store'
+for (h in 1:1140){
+  for (i in 1:length(oneM[,2])){
+    for (j in 1:length(oneM[,1])){
+      store2[h,i]<-cbind(celsius[oneM[,2][i], oneM[,1][j],h])
+    }
+  }
+}
+
+#find the mean temperature for each month
+avgtemp2=vector()
+for (i in 1:1140){
+  avgtemp2[i]<-mean(store2[i,])
+}
+avgtemp2
+#time series for average temperature
+plot(avgtemp2, type="l")
+
 
